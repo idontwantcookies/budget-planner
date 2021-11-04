@@ -1,24 +1,24 @@
-defmodule BudgetPlanning.Transactions.Category do
+defmodule BudgetPlanning.Transactions.Subcategory do
   use Ecto.Schema
   import Ecto.Changeset
-  alias BudgetPlanning.Transactions.Subcategory
+  alias BudgetPlanning.Transactions.Category
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
 
-  @required_fields [:name]
+  @required_fields [:name, :category_id]
   @fields @required_fields
 
-  schema "categories" do
+  schema "subcategories" do
     field :name, :string
 
-    has_many :subcategories, Subcategory
+    belongs_to :category, Category
     timestamps()
   end
 
   @doc false
-  def changeset(category, attrs) do
-    category
+  def changeset(subcategory, attrs) do
+    subcategory
     |> cast(attrs, @fields)
     |> validate_required(@required_fields)
   end

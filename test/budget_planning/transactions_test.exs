@@ -1,6 +1,8 @@
 defmodule BudgetPlanning.TransactionsTest do
   use BudgetPlanning.DataCase
 
+  import BudgetPlanning.Factory
+
   alias BudgetPlanning.Transactions
 
   describe "categories" do
@@ -59,6 +61,71 @@ defmodule BudgetPlanning.TransactionsTest do
     test "change_category/1 returns a category changeset" do
       category = category_fixture()
       assert %Ecto.Changeset{} = Transactions.change_category(category)
+    end
+  end
+
+  describe "subcategories" do
+    alias BudgetPlanning.Transactions.Subcategory
+
+    @valid_attrs %{name: "some name"}
+    @update_attrs %{name: "some updated name"}
+    @invalid_attrs %{name: nil}
+
+    def subcategory_fixture(attrs \\ %{}) do
+      {:ok, subcategory} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Transactions.create_subcategory()
+
+      subcategory
+    end
+
+    test "list_subcategories/0 returns all subcategories" do
+      subcategory = insert(:subcategory, @valid_attrs)
+      assert Transactions.list_subcategories() == [subcategory]
+    end
+
+    test "get_subcategory!/1 returns the subcategory with given id" do
+      subcategory = insert(:subcategory, @valid_attrs)
+      assert Transactions.get_subcategory!(subcategory.id) == subcategory
+    end
+
+    test "create_subcategory/1 with valid data creates a subcategory" do
+      assert {:ok, %Subcategory{} = subcategory} = Transactions.create_subcategory(@valid_attrs)
+      assert subcategory.name == "some name"
+    end
+
+    test "create_subcategory/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Transactions.create_subcategory(@invalid_attrs)
+    end
+
+    test "update_subcategory/2 with valid data updates the subcategory" do
+      subcategory = insert(:subcategory, @valid_attrs)
+
+      assert {:ok, %Subcategory{} = subcategory} =
+               Transactions.update_subcategory(subcategory, @update_attrs)
+
+      assert subcategory.name == "some updated name"
+    end
+
+    test "update_subcategory/2 with invalid data returns error changeset" do
+      subcategory = insert(:subcategory, @valid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Transactions.update_subcategory(subcategory, @invalid_attrs)
+
+      assert subcategory == Transactions.get_subcategory!(subcategory.id)
+    end
+
+    test "delete_subcategory/1 deletes the subcategory" do
+      subcategory = insert(:subcategory, @valid_attrs)
+      assert {:ok, %Subcategory{}} = Transactions.delete_subcategory(subcategory)
+      assert_raise Ecto.NoResultsError, fn -> Transactions.get_subcategory!(subcategory.id) end
+    end
+
+    test "change_subcategory/1 returns a subcategory changeset" do
+      subcategory = insert(:subcategory, @valid_attrs)
+      assert %Ecto.Changeset{} = Transactions.change_subcategory(subcategory)
     end
   end
 end
