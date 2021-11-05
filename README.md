@@ -1,4 +1,4 @@
-# BudgetPlanning
+# Budget
 
 To start your Phoenix server:
 

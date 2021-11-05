@@ -1,7 +1,7 @@
-defmodule BudgetPlanning.Factory do
-  use ExMachina.Ecto, repo: BudgetPlanning.Repo
+defmodule Budget.Factory do
+  use ExMachina.Ecto, repo: Budget.Repo
 
-  alias BudgetPlanning.Transactions.{Category, Subcategory}
+  alias Budget.Transactions.{Category, Subcategory}
 
   def category_factory do
     %Category{

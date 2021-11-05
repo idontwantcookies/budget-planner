@@ -1,10 +1,10 @@
 use Mix.Config
 
 # Configure your database
-config :budget_planning, BudgetPlanning.Repo,
+config :budget, Budget.Repo,
   username: "postgres",
   password: "postgres",
-  database: "budget_planning_dev",
+  database: "budget_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
@@ -15,7 +15,7 @@ config :budget_planning, BudgetPlanning.Repo,
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
-config :budget_planning, BudgetPlanningWeb.Endpoint,
+config :budget, BudgetWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
@@ -55,13 +55,13 @@ config :budget_planning, BudgetPlanningWeb.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :budget_planning, BudgetPlanningWeb.Endpoint,
+config :budget, BudgetWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/budget_planning_web/(live|views)/.*(ex)$",
-      ~r"lib/budget_planning_web/templates/.*(eex)$"
+      ~r"lib/budget_web/(live|views)/.*(ex)$",
+      ~r"lib/budget_web/templates/.*(eex)$"
     ]
   ]
 

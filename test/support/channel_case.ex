@@ -1,4 +1,4 @@
-defmodule BudgetPlanningWeb.ChannelCase do
+defmodule BudgetWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -11,7 +11,7 @@ defmodule BudgetPlanningWeb.ChannelCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use BudgetPlanningWeb.ChannelCase, async: true`, although
+  by setting `use BudgetWeb.ChannelCase, async: true`, although
   this option is not recommended for other databases.
   """
 
@@ -21,18 +21,18 @@ defmodule BudgetPlanningWeb.ChannelCase do
     quote do
       # Import conveniences for testing with channels
       import Phoenix.ChannelTest
-      import BudgetPlanningWeb.ChannelCase
+      import BudgetWeb.ChannelCase
 
       # The default endpoint for testing
-      @endpoint BudgetPlanningWeb.Endpoint
+      @endpoint BudgetWeb.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(BudgetPlanning.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Budget.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(BudgetPlanning.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Budget.Repo, {:shared, self()})
     end
 
     :ok

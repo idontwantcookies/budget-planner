@@ -1,4 +1,4 @@
-defmodule BudgetPlanning.Repo.Migrations.CreateSubcategories do
+defmodule Budget.Repo.Migrations.CreateSubcategories do
   use Ecto.Migration
 
   def change do

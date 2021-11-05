@@ -1,9 +1,9 @@
-defmodule BudgetPlanning.MixProject do
+defmodule Budget.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :budget_planning,
+      app: :budget,
       version: "0.1.0",
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -19,7 +19,7 @@ defmodule BudgetPlanning.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {BudgetPlanning.Application, []},
+      mod: {Budget.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end

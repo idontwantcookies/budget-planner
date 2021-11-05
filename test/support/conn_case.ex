@@ -1,4 +1,4 @@
-defmodule BudgetPlanningWeb.ConnCase do
+defmodule BudgetWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -11,7 +11,7 @@ defmodule BudgetPlanningWeb.ConnCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use BudgetPlanningWeb.ConnCase, async: true`, although
+  by setting `use BudgetWeb.ConnCase, async: true`, although
   this option is not recommended for other databases.
   """
 
@@ -22,20 +22,20 @@ defmodule BudgetPlanningWeb.ConnCase do
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest
-      import BudgetPlanningWeb.ConnCase
+      import BudgetWeb.ConnCase
 
-      alias BudgetPlanningWeb.Router.Helpers, as: Routes
+      alias BudgetWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
-      @endpoint BudgetPlanningWeb.Endpoint
+      @endpoint BudgetWeb.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(BudgetPlanning.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Budget.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(BudgetPlanning.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Budget.Repo, {:shared, self()})
     end
 
     {:ok, conn: Phoenix.ConnTest.build_conn()}
