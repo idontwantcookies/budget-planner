@@ -1,9 +1,9 @@
-defmodule Budget.Transactions.CategorySeeds do
+defmodule Budget.Finances.CategorySeeds do
   @moduledoc """
   Used to quickly get the application running with some commonly used categories.
   """
 
-  alias Budget.Transactions
+  alias Budget.Finances
 
   def seed! do
     [
@@ -23,7 +23,7 @@ defmodule Budget.Transactions.CategorySeeds do
       "Travel",
       "Utilities"
     ]
-    |> Enum.each(fn name -> {:ok, _category} = Transactions.create_category(%{name: name}) end)
+    |> Enum.each(fn name -> {:ok, _category} = Finances.create_category(%{name: name}) end)
 
     :ok
   end

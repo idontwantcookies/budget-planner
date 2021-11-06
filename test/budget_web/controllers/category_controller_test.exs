@@ -1,14 +1,14 @@
 defmodule BudgetWeb.CategoryControllerTest do
   use BudgetWeb.ConnCase
 
-  alias Budget.Transactions
+  alias Budget.Finances
 
   @create_attrs %{name: "some name"}
   @update_attrs %{name: "some updated name"}
   @invalid_attrs %{name: nil}
 
   def fixture(:category) do
-    {:ok, category} = Transactions.create_category(@create_attrs)
+    {:ok, category} = Finances.create_category(@create_attrs)
     category
   end
 

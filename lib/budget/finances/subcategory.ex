@@ -1,11 +1,11 @@
-defmodule Budget.Transactions.Subcategory do
+defmodule Budget.Finances.Subcategory do
   @moduledoc """
   Minor category, used for fine-tuning categorization, usually for monthy budget reports.
   """
 
   use Ecto.Schema
   import Ecto.Changeset
-  alias Budget.Transactions.Category
+  alias Budget.Finances.Category
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id

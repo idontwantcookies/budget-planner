@@ -1,21 +1,21 @@
 defmodule BudgetWeb.SubcategoryController do
   use BudgetWeb, :controller
 
-  alias Budget.Transactions
-  alias Budget.Transactions.Subcategory
+  alias Budget.Finances
+  alias Budget.Finances.Subcategory
 
   def index(conn, _params) do
-    subcategories = Transactions.list_subcategories([:category])
+    subcategories = Finances.list_subcategories([:category])
     render(conn, "index.html", subcategories: subcategories)
   end
 
   def new(conn, _params) do
-    changeset = Transactions.change_subcategory(%Subcategory{})
+    changeset = Finances.change_subcategory(%Subcategory{})
     render(conn, "new.html", changeset: changeset)
   end
 
   def create(conn, %{"subcategory" => subcategory_params}) do
-    case Transactions.create_subcategory(subcategory_params) do
+    case Finances.create_subcategory(subcategory_params) do
       {:ok, subcategory} ->
         conn
         |> put_flash(:info, "Subcategory created successfully.")
@@ -27,20 +27,20 @@ defmodule BudgetWeb.SubcategoryController do
   end
 
   def show(conn, %{"id" => id}) do
-    subcategory = Transactions.get_subcategory!(id, [:category])
+    subcategory = Finances.get_subcategory!(id, [:category])
     render(conn, "show.html", subcategory: subcategory)
   end
 
   def edit(conn, %{"id" => id}) do
-    subcategory = Transactions.get_subcategory!(id)
-    changeset = Transactions.change_subcategory(subcategory)
+    subcategory = Finances.get_subcategory!(id)
+    changeset = Finances.change_subcategory(subcategory)
     render(conn, "edit.html", subcategory: subcategory, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "subcategory" => subcategory_params}) do
-    subcategory = Transactions.get_subcategory!(id)
+    subcategory = Finances.get_subcategory!(id)
 
-    case Transactions.update_subcategory(subcategory, subcategory_params) do
+    case Finances.update_subcategory(subcategory, subcategory_params) do
       {:ok, subcategory} ->
         conn
         |> put_flash(:info, "Subcategory updated successfully.")
@@ -52,8 +52,8 @@ defmodule BudgetWeb.SubcategoryController do
   end
 
   def delete(conn, %{"id" => id}) do
-    subcategory = Transactions.get_subcategory!(id)
-    {:ok, _subcategory} = Transactions.delete_subcategory(subcategory)
+    subcategory = Finances.get_subcategory!(id)
+    {:ok, _subcategory} = Finances.delete_subcategory(subcategory)
 
     conn
     |> put_flash(:info, "Subcategory deleted successfully.")

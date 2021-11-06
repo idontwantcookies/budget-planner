@@ -1,11 +1,11 @@
-defmodule Budget.Transactions.Category do
+defmodule Budget.Finances.Category do
   @moduledoc """
   Major categories used for organizing budget into bug chunks (specially in annual reports).
   """
 
   use Ecto.Schema
   import Ecto.Changeset
-  alias Budget.Transactions.Subcategory
+  alias Budget.Finances.Subcategory
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id

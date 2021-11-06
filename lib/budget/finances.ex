@@ -1,12 +1,12 @@
-defmodule Budget.Transactions do
+defmodule Budget.Finances do
   @moduledoc """
-  The Transactions context.
+  The Finances context.
   """
 
   import Ecto.Query, warn: false
   alias Budget.Repo
 
-  alias Budget.Transactions.{Category, Subcategory}
+  alias Budget.Finances.{Category, Subcategory}
 
   def list_categories do
     Repo.all(Category)
