@@ -1,4 +1,8 @@
 defmodule Budget.Factory do
+  @moduledoc """
+  This module provides a factory for creating Budget objects.
+  """
+
   use ExMachina.Ecto, repo: Budget.Repo
 
   alias Budget.Transactions.{Category, Subcategory}

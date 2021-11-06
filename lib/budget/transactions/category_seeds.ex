@@ -1,4 +1,8 @@
 defmodule Budget.Transactions.CategorySeeds do
+  @moduledoc """
+  Used to quickly get the application running with some commonly used categories.
+  """
+
   alias Budget.Transactions
 
   def seed! do
