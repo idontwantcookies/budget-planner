@@ -33,5 +33,6 @@ defmodule Budget.Finances.Subcategory do
     subcategory
     |> cast(attrs, @fields)
     |> validate_required(@required_fields)
+    |> unique_constraint([:name, :category_id])
   end
 end

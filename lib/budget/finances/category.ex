@@ -31,5 +31,6 @@ defmodule Budget.Finances.Category do
     category
     |> cast(attrs, @fields)
     |> validate_required(@required_fields)
+    |> unique_constraint(:name)
   end
 end

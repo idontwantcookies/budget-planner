@@ -3,6 +3,7 @@ defmodule Budget.FinancesTest do
   import Budget.Factory
   alias Budget.Finances
   alias Budget.Finances.{Category, Subcategory, Transaction}
+  alias Ecto.Changeset
 
   describe "list_categories/0" do
     test "returns all categories" do
@@ -69,34 +70,44 @@ defmodule Budget.FinancesTest do
   end
 
   describe "list_subcategories/0" do
-    test "list_subcategories/0 returns all subcategories" do
+    test "returns all subcategories" do
       subcategory = insert(:subcategory)
       assert Finances.list_subcategories([:category]) == [subcategory]
     end
   end
 
   describe "get_subcategory!/1" do
-    test "get_subcategory!/1 returns the subcategory with given id" do
+    test "returns the subcategory with given id" do
       subcategory = insert(:subcategory)
       assert Finances.get_subcategory!(subcategory.id, [:category]) == subcategory
     end
   end
 
   describe "create_subcategory/1" do
-    test "create_subcategory/1 with valid data creates a subcategory" do
+    test "with valid data creates a subcategory" do
       attrs = params_with_assocs(:subcategory)
       assert {:ok, %Subcategory{} = subcategory} = Finances.create_subcategory(attrs)
       assert subcategory.name == attrs[:name]
     end
 
-    test "create_subcategory/1 with invalid data returns error changeset" do
+    test "with invalid data returns error changeset" do
       attrs = params_with_assocs(:subcategory, %{name: nil})
       assert {:error, %Ecto.Changeset{}} = Finances.create_subcategory(attrs)
+    end
+
+    test "does not accept subcategory with same name and same category_id" do
+      category = insert(:category)
+      subcategory = insert(:subcategory, category: category)
+      attrs = %{name: subcategory.name, category_id: category.id}
+      assert {:error, %Changeset{} = changeset} = Finances.create_subcategory(attrs)
+      errors = errors_on(changeset)
+
+      assert "has already been taken" in errors[:name]
     end
   end
 
   describe "update_subcategory/2" do
-    test "update_subcategory/2 with valid data updates the subcategory" do
+    test "with valid data updates the subcategory" do
       subcategory = insert(:subcategory)
 
       assert {:ok, %Subcategory{} = subcategory} =
@@ -105,7 +116,7 @@ defmodule Budget.FinancesTest do
       assert subcategory.name == "some updated name"
     end
 
-    test "update_subcategory/2 with invalid data returns error changeset" do
+    test "with invalid data returns error changeset" do
       subcategory = insert(:subcategory)
 
       assert {:error, %Ecto.Changeset{} = changeset} =
@@ -117,7 +128,7 @@ defmodule Budget.FinancesTest do
   end
 
   describe "delete_subcategory/1" do
-    test "delete_subcategory/1 deletes the subcategory" do
+    test "deletes the subcategory" do
       subcategory = insert(:subcategory)
       assert {:ok, %Subcategory{}} = Finances.delete_subcategory(subcategory)
       assert_raise Ecto.NoResultsError, fn -> Finances.get_subcategory!(subcategory.id) end
@@ -125,7 +136,7 @@ defmodule Budget.FinancesTest do
   end
 
   describe "change_subcategory/1" do
-    test "change_subcategory/1 returns a subcategory changeset" do
+    test "returns a subcategory changeset" do
       subcategory = insert(:subcategory)
       assert %Ecto.Changeset{valid?: true} = Finances.change_subcategory(subcategory)
     end
