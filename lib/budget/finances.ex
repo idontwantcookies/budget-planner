@@ -6,7 +6,7 @@ defmodule Budget.Finances do
   import Ecto.Query, warn: false
   alias Budget.Repo
 
-  alias Budget.Finances.{Category, Subcategory}
+  alias Budget.Finances.{Category, Subcategory, Transaction}
 
   def list_categories do
     Repo.all(Category)
@@ -62,5 +62,30 @@ defmodule Budget.Finances do
 
   def change_subcategory(%Subcategory{} = subcategory, attrs \\ %{}) do
     Subcategory.changeset(subcategory, attrs)
+  end
+
+  def list_transactions(preloads \\ []), do: Transaction |> Repo.all() |> Repo.preload(preloads)
+
+  def get_transaction!(id, preloads \\ []),
+    do: Transaction |> Repo.get!(id) |> Repo.preload(preloads)
+
+  def create_transaction(attrs \\ %{}) do
+    %Transaction{}
+    |> Transaction.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_transaction(%Transaction{} = transaction, attrs) do
+    transaction
+    |> Transaction.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_transaction(%Transaction{} = transaction) do
+    Repo.delete(transaction)
+  end
+
+  def change_transaction(%Transaction{} = transaction, attrs \\ %{}) do
+    Transaction.changeset(transaction, attrs)
   end
 end

@@ -1,11 +1,8 @@
 defmodule Budget.FinancesTest do
   use Budget.DataCase
-
   import Budget.Factory
-
   alias Budget.Finances
-
-  alias Budget.Finances.{Category, Subcategory}
+  alias Budget.Finances.{Category, Subcategory, Transaction}
 
   describe "list_categories/0" do
     test "returns all categories" do
@@ -131,6 +128,83 @@ defmodule Budget.FinancesTest do
     test "change_subcategory/1 returns a subcategory changeset" do
       subcategory = insert(:subcategory)
       assert %Ecto.Changeset{valid?: true} = Finances.change_subcategory(subcategory)
+    end
+  end
+
+  describe "list_transactions/0" do
+    test "returns all transactions" do
+      transaction = insert(:transaction)
+      assert Finances.list_transactions(subcategory: :category) == [transaction]
+    end
+  end
+
+  describe "get_transaction!/1" do
+    test "returns the transaction with given id" do
+      transaction = insert(:transaction)
+      assert Finances.get_transaction!(transaction.id, subcategory: :category) == transaction
+    end
+  end
+
+  describe "create_transaction/1" do
+    test "creates a transaction with valid data" do
+      attrs = params_with_assocs(:transaction)
+      assert {:ok, %Transaction{} = transaction} = Finances.create_transaction(attrs)
+      assert transaction.description == attrs[:description]
+      assert transaction.due_by == attrs[:due_by]
+      assert transaction.status == attrs[:status]
+      assert transaction.type == attrs[:type]
+      assert transaction.value == attrs[:value]
+    end
+
+    test "returns error changeset with invalid data" do
+      attrs = %{}
+      assert {:error, %Ecto.Changeset{}} = Finances.create_transaction(attrs)
+    end
+  end
+
+  describe "update_transaction/2" do
+    test "updates the transaction with valid data" do
+      transaction = insert(:transaction)
+
+      attrs = %{
+        description: "some updated description",
+        due_by: ~D[2011-05-18],
+        status: :completed,
+        type: :income,
+        value: "456.7"
+      }
+
+      assert {:ok, %Transaction{} = transaction} = Finances.update_transaction(transaction, attrs)
+
+      assert transaction.description == "some updated description"
+      assert transaction.due_by == ~D[2011-05-18]
+      assert transaction.status == :completed
+      assert transaction.type == :income
+      assert transaction.value == Decimal.new("456.7")
+    end
+
+    test "update_transaction/2 with invalid data returns error changeset" do
+      transaction = insert(:transaction)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Finances.update_transaction(transaction, %{due_by: nil})
+
+      assert transaction == Finances.get_transaction!(transaction.id, subcategory: :category)
+    end
+  end
+
+  describe "delete_transaction/1" do
+    test "deletes the transaction" do
+      transaction = insert(:transaction)
+      assert {:ok, %Transaction{}} = Finances.delete_transaction(transaction)
+      assert_raise Ecto.NoResultsError, fn -> Finances.get_transaction!(transaction.id) end
+    end
+  end
+
+  describe "change_transaction/1" do
+    test "change_transaction/1 returns a transaction changeset" do
+      transaction = insert(:transaction)
+      assert %Ecto.Changeset{} = Finances.change_transaction(transaction)
     end
   end
 end

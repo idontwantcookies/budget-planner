@@ -1,0 +1,34 @@
+<h1>Listing Transactions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Due by</th>
+      <th>Status</th>
+      <th>Type</th>
+      <th>Description</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for transaction <- @transactions do %>
+    <tr>
+      <td><%= transaction.value %></td>
+      <td><%= transaction.due_by %></td>
+      <td><%= transaction.status %></td>
+      <td><%= transaction.type %></td>
+      <td><%= transaction.description %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.transaction_path(@conn, :show, transaction) %></span>
+        <span><%= link "Edit", to: Routes.transaction_path(@conn, :edit, transaction) %></span>
+        <span><%= link "Delete", to: Routes.transaction_path(@conn, :delete, transaction), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Transaction", to: Routes.transaction_path(@conn, :new) %></span>

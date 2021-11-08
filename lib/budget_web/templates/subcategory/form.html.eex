@@ -6,7 +6,7 @@
   <% end %>
 
   <%= label f, :category_id %>
-  <%= select f, :category_id, available_categories() |> Enum.map(&({&1.name, &1.id})) %>
+  <%= select f, :category_id, available_categories() %>
   <%= error_tag f, :category_id %>
 
   <%= label f, :name %>

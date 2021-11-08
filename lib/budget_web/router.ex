@@ -19,6 +19,7 @@ defmodule BudgetWeb.Router do
     get "/", PageController, :index
     resources "/categories", CategoryController
     resources "/subcategories", SubcategoryController
+    resources "/transactions", TransactionController
   end
 
   # Other scopes may use custom stacks.
