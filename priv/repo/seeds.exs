@@ -29,15 +29,15 @@ defmodule Seeds do
       "travel" => ~w"airfare hotels food transportation entertainment other",
       "utilities" => ~w"phone tv internet electricity heat/gas water trash other"
     }
-    |> Enum.map(&seed_category/1)
+    |> Enum.map(&seed_category(&1, :expense))
     |> Enum.map(&seed_subcategories/1)
 
     :ok
   end
 
-  defp seed_category({name, subcategories}) do
+  defp seed_category({name, subcategories}, type) do
     with name <- parse_name(name),
-         category <- %Category{name: name},
+         category <- %Category{name: name, type: type},
          %Category{id: id} <- Repo.insert!(category) do
       {id, subcategories}
     end

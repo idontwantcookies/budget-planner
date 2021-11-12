@@ -9,6 +9,10 @@
   <%= text_input f, :name %>
   <%= error_tag f, :name %>
 
+  <%= label f, :type %>
+  <%= select f, :type, Ecto.Enum.values(Category, :type) %>
+  <%= error_tag f, :type %>
+
   <div>
     <%= submit "Save" %>
   </div>

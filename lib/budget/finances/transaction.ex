@@ -1,20 +1,19 @@
 defmodule Budget.Finances.Transaction do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Ecto.{Enum, UUID}
+  alias Ecto.UUID
   alias Budget.Finances.Subcategory
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   @required_fields [:value, :due_by, :subcategory_id]
-  @fields [:description, :status, :type | @required_fields]
+  @fields [:description, :status | @required_fields]
 
   @type t :: %__MODULE__{
           id: UUID.t(),
           description: String.t(),
           due_by: Date.t(),
-          status: Enum.t(:pending, :scheduled, :completed, :cancelled),
-          type: Enum.t(:income, :expense),
+          status: Ecto.Enum.t(:pending, :scheduled, :completed, :cancelled),
           value: Decimal.t(),
           subcategory_id: UUID.t()
         }
@@ -22,8 +21,11 @@ defmodule Budget.Finances.Transaction do
   schema "transactions" do
     field :description, :string, default: ""
     field :due_by, :date
-    field :status, Enum, values: [:pending, :scheduled, :completed, :cancelled], default: :pending
-    field :type, Enum, values: [:income, :expense], default: :expense
+
+    field :status, Ecto.Enum,
+      values: [:pending, :scheduled, :completed, :cancelled],
+      default: :pending
+
     field :value, :decimal
 
     belongs_to :subcategory, Subcategory

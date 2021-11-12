@@ -24,6 +24,7 @@ defmodule Budget.FinancesTest do
       attrs = params_with_assocs(:category)
       assert {:ok, %Category{} = category} = Finances.create_category(attrs)
       assert category.name == attrs[:name]
+      assert category.type == attrs[:type]
     end
 
     test "with invalid data returns error changeset" do
@@ -35,12 +36,13 @@ defmodule Budget.FinancesTest do
 
   describe "update_category/2" do
     test "with valid data updates the category" do
-      category = insert(:category)
+      category = insert(:category, type: :expense)
 
       assert {:ok, %Category{} = category} =
-               Finances.update_category(category, %{name: "some updated name"})
+               Finances.update_category(category, %{name: "some updated name", type: :income})
 
       assert category.name == "some updated name"
+      assert category.type == :income
     end
 
     test "with invalid data returns error changeset" do
@@ -163,7 +165,6 @@ defmodule Budget.FinancesTest do
       assert transaction.description == attrs[:description]
       assert transaction.due_by == attrs[:due_by]
       assert transaction.status == attrs[:status]
-      assert transaction.type == attrs[:type]
       assert transaction.value == attrs[:value]
     end
 
@@ -181,7 +182,6 @@ defmodule Budget.FinancesTest do
         description: "some updated description",
         due_by: ~D[2011-05-18],
         status: :completed,
-        type: :income,
         value: "456.7"
       }
 
@@ -190,7 +190,6 @@ defmodule Budget.FinancesTest do
       assert transaction.description == "some updated description"
       assert transaction.due_by == ~D[2011-05-18]
       assert transaction.status == :completed
-      assert transaction.type == :income
       assert transaction.value == Decimal.new("456.7")
     end
 

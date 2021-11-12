@@ -8,7 +8,8 @@ defmodule Budget.Factory do
 
   def category_factory do
     %Category{
-      name: sequence("Category#")
+      name: sequence("Category#"),
+      type: :expense
     }
   end
 
@@ -25,7 +26,6 @@ defmodule Budget.Factory do
       description: sequence("Transaction#"),
       due_by: Date.utc_today(),
       status: :pending,
-      type: :expense,
       value: Decimal.new("#{:rand.uniform() * 100}")
     }
   end

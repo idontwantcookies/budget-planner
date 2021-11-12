@@ -25,10 +25,6 @@
   <%= select f, :status, Ecto.Enum.values(Transaction, :status) %>
   <%= error_tag f, :status %>
 
-  <%= label f, :type %>
-  <%= select f, :type, Ecto.Enum.values(Transaction, :type) %>
-  <%= error_tag f, :type %>
-
   <div>
     <%= submit "Save" %>
   </div>

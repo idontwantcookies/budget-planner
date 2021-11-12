@@ -6,7 +6,6 @@
       <th>Value</th>
       <th>Due by</th>
       <th>Status</th>
-      <th>Type</th>
       <th>Description</th>
 
       <th></th>
@@ -18,7 +17,6 @@
       <td><%= transaction.value %></td>
       <td><%= transaction.due_by %></td>
       <td><%= transaction.status %></td>
-      <td><%= transaction.type %></td>
       <td><%= transaction.description %></td>
 
       <td>
