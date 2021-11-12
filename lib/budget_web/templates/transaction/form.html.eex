@@ -13,21 +13,21 @@
   <%= number_input f, :value, step: "any" %>
   <%= error_tag f, :value %>
 
-  <%= label f, :due_by %>
-  <%= date_select f, :due_by %>
-  <%= error_tag f, :due_by %>
-
-  <%= label f, :status %>
-  <%= text_input f, :status %>
-  <%= error_tag f, :status %>
-
-  <%= label f, :type %>
-  <%= text_input f, :type %>
-  <%= error_tag f, :type %>
-
   <%= label f, :description %>
   <%= text_input f, :description %>
   <%= error_tag f, :description %>
+
+  <%= label f, :due_by %>
+  <%= date_input f, :due_by %>
+  <%= error_tag f, :due_by %>
+
+  <%= label f, :status %>
+  <%= select f, :status, Ecto.Enum.values(Transaction, :status) %>
+  <%= error_tag f, :status %>
+
+  <%= label f, :type %>
+  <%= select f, :type, Ecto.Enum.values(Transaction, :type) %>
+  <%= error_tag f, :type %>
 
   <div>
     <%= submit "Save" %>
