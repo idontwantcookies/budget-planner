@@ -3,29 +3,29 @@
 <table>
   <thead>
     <tr>
-      <th>Value</th>
       <th>Due by</th>
-      <th>Status</th>
+      <th>Value</th>
       <th>Description</th>
+      <th>Type</th>
+      <th>Status</th>
 
       <th></th>
     </tr>
   </thead>
   <tbody>
-<%= for transaction <- @transactions do %>
-    <tr>
-      <td><%= transaction.value %></td>
-      <td><%= transaction.due_by %></td>
-      <td><%= transaction.status %></td>
-      <td><%= transaction.description %></td>
+    <%= for t <- @transactions do %>
+      <tr>
+        <td><%= t.due_by %></td>
+        <td><%= t.value %></td>
+        <td><%= link t.description, to: Routes.transaction_path(@conn, :edit, t) %></td>
+        <td><%= link t.subcategory.name, to: Routes.subcategory_path(@conn, :edit, t.subcategory) %></td>
+        <td><%= t.status %></td>
 
-      <td>
-        <span><%= link "Show", to: Routes.transaction_path(@conn, :show, transaction) %></span>
-        <span><%= link "Edit", to: Routes.transaction_path(@conn, :edit, transaction) %></span>
-        <span><%= link "Delete", to: Routes.transaction_path(@conn, :delete, transaction), method: :delete, data: [confirm: "Are you sure?"] %></span>
-      </td>
-    </tr>
-<% end %>
+        <td>
+          <span><%= link "Delete", to: Routes.transaction_path(@conn, :delete, t), method: :delete, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
   </tbody>
 </table>
 

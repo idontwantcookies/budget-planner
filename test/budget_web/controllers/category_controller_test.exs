@@ -34,7 +34,7 @@ defmodule BudgetWeb.CategoryControllerTest do
       assert redirected_to(conn) == Routes.category_path(conn, :show, id)
 
       conn = get(conn, Routes.category_path(conn, :show, id))
-      assert html_response(conn, 200) =~ "Show Category"
+      assert html_response(conn, 200) =~ @create_attrs[:name]
     end
 
     test "renders errors when data is invalid", %{conn: conn} do

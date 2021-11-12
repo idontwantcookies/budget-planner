@@ -5,7 +5,7 @@ defmodule BudgetWeb.TransactionController do
   alias Budget.Finances.Transaction
 
   def index(conn, _params) do
-    transactions = Finances.list_transactions()
+    transactions = Finances.list_transactions(:subcategory)
     render(conn, "index.html", transactions: transactions)
   end
 

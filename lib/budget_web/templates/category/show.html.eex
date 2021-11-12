@@ -1,19 +1,16 @@
-<h1>Show Category</h1>
+<h1><%= @category.name %></h1>
 
+<strong>Type:</strong>
+<%= @category.type %>
+
+<h2>Subcategories</h2>
 <ul>
-
-  <li>
-    <strong>Name:</strong>
-    <%= @category.name %>
-  </li>
-
-  <li>
-    <strong>Type:</strong>
-    <%= @category.type %>
-  </li>
-
-
-</ul>
+    <%= for sc <- @category.subcategories do %>
+      <li>
+        <%= link(sc.name, to: Routes.subcategory_path(@conn, :edit, sc.id)) %>
+      </li>
+    <% end %>
+  </ul>
 
 <span><%= link "Edit", to: Routes.category_path(@conn, :edit, @category) %></span>
 <span><%= link "Back", to: Routes.category_path(@conn, :index) %></span>

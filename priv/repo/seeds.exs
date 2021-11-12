@@ -6,31 +6,38 @@ defmodule Seeds do
   alias Budget.Finances.{Category, Subcategory}
   alias Budget.Repo
 
+  @expenses %{
+    "children" => ~w"activities allowance medical childcare clothing school toys other",
+    "debt" => ~w"credit cards student_loans other_loans taxes(federal) taxes(state) other",
+    "education" => ~w"tuition books music_lessons other",
+    "entertainment" =>
+      ~w"books concerts/shows games hobbies movies music outdoor_activities photography sports theater/plays tv drinks other",
+    "everyday" =>
+      ~w"groceries restaurants personal supplies clothes laundry hair/beauty subscriptions other",
+    "gifts" => ~w"gifts donations other",
+    "health/medical" =>
+      ~w"doctors/dental/vision therapy speciality_care pharmacy emergency other",
+    "home" =>
+      ~w"rent/mortgage property_taxes furnishings condominium lawn/garden supplies maintainance improvements moving other",
+    "insurance" => ~w"car health home life other",
+    "investments" => ~w"fixed_income treasuries funds stocks savings other",
+    "pets" => ~w"food vet/medical toys supplies other",
+    "technology" => ~w"domains_&_hosting online services hardware software other",
+    "transportation" =>
+      ~w"fuel car payments repairs registration/license supplies public transit other",
+    "travel" => ~w"airfare hotels food transportation entertainment other",
+    "utilities" => ~w"phone tv internet electricity heat/gas water trash other"
+  }
+
+  @incomes %{
+    "wages" => ~w"paycheck tips bonus comission other",
+    "other" => ~w"transfer_from_savings interest_income dividends gifts refunds other"
+  }
+
   def seed_categories! do
-    %{
-      "children" => ~w"activities allowance medical childcare clothing school toys other",
-      "debt" => ~w"credit cards student_loans other_loans taxes(federal) taxes(state) other",
-      "education" => ~w"tuition books music_lessons other",
-      "entertainment" =>
-        ~w"books concerts/shows games hobbies movies music outdoor_activities photography sports theater/plays tv drinks other",
-      "everyday" =>
-        ~w"groceries restaurants personal supplies clothes laundry hair/beauty subscriptions other",
-      "gifts" => ~w"gifts donations other",
-      "health/medical" =>
-        ~w"doctors/dental/vision therapy speciality_care pharmacy emergency other",
-      "home" =>
-        ~w"rent/mortgage property_taxes furnishings condominium lawn/garden supplies maintainance improvements moving other",
-      "insurance" => ~w"car health home life other",
-      "investments" => ~w"fixed_income treasuries funds stocks savings other",
-      "pets" => ~w"food vet/medical toys supplies other",
-      "technology" => ~w"domains_&_hosting online services hardware software other",
-      "transportation" =>
-        ~w"fuel car payments repairs registration/license supplies public transit other",
-      "travel" => ~w"airfare hotels food transportation entertainment other",
-      "utilities" => ~w"phone tv internet electricity heat/gas water trash other"
-    }
-    |> Enum.map(&seed_category(&1, :expense))
-    |> Enum.map(&seed_subcategories/1)
+    expenses = Enum.map(@expenses, &seed_category(&1, :expense))
+    incomes = Enum.map(@incomes, &seed_category(&1, :income))
+    Enum.each(expenses ++ incomes, &seed_subcategories/1)
 
     :ok
   end
@@ -45,7 +52,7 @@ defmodule Seeds do
 
   defp seed_subcategories({category_id, subcategories}) do
     Enum.each(subcategories, fn name ->
-      :ok = create_subcategory(category_id, name)
+      :ok = create_subcategory(category_id, parse_name(name))
     end)
 
     :ok

@@ -27,7 +27,7 @@ defmodule BudgetWeb.CategoryController do
   end
 
   def show(conn, %{"id" => id}) do
-    category = Finances.get_category!(id)
+    category = Finances.get_category!(id, :subcategories)
     render(conn, "show.html", category: category)
   end
 
