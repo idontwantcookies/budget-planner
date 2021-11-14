@@ -46,7 +46,7 @@ defmodule Seeds do
     %Transaction{
       value: 65,
       due_by: Date.utc_today(),
-      subcategory: Repo.get_by(Subcategory, name: "restaurants"),
+      subcategory_id: Repo.get_by(Subcategory, name: "Restaurants").id,
       description: "Lunch with friends"
     }
     |> Repo.insert!(on_conflict: :nothing)

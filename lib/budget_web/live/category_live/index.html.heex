@@ -1,0 +1,35 @@
+<h1>Listing Categories</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal BudgetWeb.CategoryLive.FormComponent,
+    id: @category.id || :new,
+    title: @page_title,
+    action: @live_action,
+    category: @category,
+    return_to: Routes.category_index_path(@socket, :index) %>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="categories">
+    <%= for category <- @categories do %>
+      <tr id={"category-#{category.id}"}>
+        <td><%= live_patch category.name, to: Routes.category_index_path(@socket, :edit, category) %></td>
+        <td><%= category.type %></td>
+
+        <td>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: category.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Category", to: Routes.category_index_path(@socket, :new) %></span>
