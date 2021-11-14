@@ -52,11 +52,4 @@ defmodule BudgetWeb.TransactionLive.FormComponent do
         {:noreply, assign(socket, changeset: changeset)}
     end
   end
-
-  def get_subcategories do
-    :category
-    |> Finances.list_subcategories()
-    |> Enum.sort_by(fn sc -> {sc.category.name, sc.inserted_at} end)
-    |> Enum.map(fn sc -> {sc.category.name <> "> " <> sc.name, sc.id} end)
-  end
 end

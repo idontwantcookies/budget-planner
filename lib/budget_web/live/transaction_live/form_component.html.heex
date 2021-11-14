@@ -27,7 +27,7 @@
     <%= error_tag f, :status %>
 
     <%= label f, :subcategory_id %>
-    <%= select f, :subcategory_id, get_subcategories() %>
+    <%= select f, :subcategory_id, @subcategories %>
     <%= error_tag f, :subcategory_id %>
   
     <div>

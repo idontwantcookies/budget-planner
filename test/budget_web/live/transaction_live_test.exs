@@ -34,7 +34,6 @@ defmodule BudgetWeb.TransactionLiveTest do
       assert html =~ transaction.description
     end
 
-    @tag :wip
     test "saves new transaction", %{conn: conn} do
       {:ok, index_live, _html} = live(conn, Routes.transaction_index_path(conn, :index))
 
