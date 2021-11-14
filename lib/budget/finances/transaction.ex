@@ -6,8 +6,8 @@ defmodule Budget.Finances.Transaction do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
-  @required_fields [:value, :due_by, :subcategory_id, :status]
-  @fields [:description | @required_fields]
+  @required_fields [:value, :due_by, :subcategory_id, :status, :description]
+  @fields @required_fields
 
   @type t :: %__MODULE__{
           id: UUID.t(),
@@ -19,7 +19,7 @@ defmodule Budget.Finances.Transaction do
         }
 
   schema "transactions" do
-    field :description, :string, default: ""
+    field :description, :string
     field :due_by, :date
 
     field :status, Ecto.Enum,

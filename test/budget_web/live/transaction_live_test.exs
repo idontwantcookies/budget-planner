@@ -60,8 +60,9 @@ defmodule BudgetWeb.TransactionLiveTest do
     test "updates transaction in listing", %{conn: conn, transaction: transaction} do
       {:ok, index_live, _html} = live(conn, Routes.transaction_index_path(conn, :index))
 
-      assert index_live |> element("#transaction-#{transaction.id} a", "Edit") |> render_click() =~
-               "Edit Transaction"
+      assert index_live
+             |> element("#transaction-#{transaction.id} a", transaction.description)
+             |> render_click() =~ "Edit Transaction"
 
       assert_patch(index_live, Routes.transaction_index_path(conn, :edit, transaction))
 
@@ -92,20 +93,13 @@ defmodule BudgetWeb.TransactionLiveTest do
       %{transaction: insert(:transaction)}
     end
 
-    test "displays transaction", %{conn: conn, transaction: transaction} do
-      {:ok, _show_live, html} = live(conn, Routes.transaction_show_path(conn, :show, transaction))
-
-      assert html =~ "Show Transaction"
-      assert html =~ transaction.description
-    end
-
     test "updates transaction within modal", %{conn: conn, transaction: transaction} do
-      {:ok, show_live, _html} = live(conn, Routes.transaction_show_path(conn, :show, transaction))
+      {:ok, show_live, _html} = live(conn, Routes.transaction_index_path(conn, :index))
 
-      assert show_live |> element("a", "Edit") |> render_click() =~
+      assert show_live |> element("a", transaction.description) |> render_click() =~
                "Edit Transaction"
 
-      assert_patch(show_live, Routes.transaction_show_path(conn, :edit, transaction))
+      assert_patch(show_live, Routes.transaction_index_path(conn, :edit, transaction))
 
       assert show_live
              |> form("#transaction-form", transaction: @invalid_attrs)
@@ -115,7 +109,7 @@ defmodule BudgetWeb.TransactionLiveTest do
         show_live
         |> form("#transaction-form", transaction: @update_attrs)
         |> render_submit()
-        |> follow_redirect(conn, Routes.transaction_show_path(conn, :show, transaction))
+        |> follow_redirect(conn, Routes.transaction_index_path(conn, :index))
 
       assert html =~ "Transaction updated successfully"
       assert html =~ "some updated description"

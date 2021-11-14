@@ -6,7 +6,7 @@
     title: @page_title,
     action: @live_action,
     transaction: @transaction,
-    return_to: Routes.transaction_show_path(@socket, :show, @transaction) %>
+    return_to: Routes.transaction_index_path(@socket, :index) %>
 <% end %>
 
 <ul>
@@ -33,5 +33,5 @@
 
 </ul>
 
-<span><%= live_patch "Edit", to: Routes.transaction_show_path(@socket, :edit, @transaction), class: "button" %></span> |
+<span><%= live_patch "Edit", to: Routes.transaction_index_path(@socket, :edit, @transaction), class: "button" %></span> |
 <span><%= live_redirect "Back", to: Routes.transaction_index_path(@socket, :index) %></span>

@@ -23,14 +23,12 @@
   <tbody id="transactions">
     <%= for transaction <- @transactions do %>
       <tr id={"transaction-#{transaction.id}"}>
-        <td><%= transaction.description %></td>
+        <td><span><%= live_patch transaction.description, to: Routes.transaction_index_path(@socket, :edit, transaction) %></span></td>
         <td><%= transaction.due_by %></td>
         <td><%= transaction.status %></td>
         <td><%= transaction.value %></td>
 
         <td>
-          <span><%= live_redirect "Show", to: Routes.transaction_show_path(@socket, :show, transaction) %></span>
-          <span><%= live_patch "Edit", to: Routes.transaction_index_path(@socket, :edit, transaction) %></span>
           <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: transaction.id, data: [confirm: "Are you sure?"] %></span>
         </td>
       </tr>
