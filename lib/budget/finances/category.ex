@@ -15,7 +15,7 @@ defmodule Budget.Finances.Category do
 
   @type t :: %__MODULE__{
           name: String.t(),
-          type: Ecto.Enum.t(:income, :expense),
+          type: atom(),
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
         }

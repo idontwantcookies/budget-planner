@@ -4,7 +4,8 @@ defmodule BudgetWeb.Router do
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
-    plug :fetch_flash
+    plug :fetch_live_flash
+    plug :put_root_layout, {BudgetWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
@@ -17,9 +18,12 @@ defmodule BudgetWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    resources "/categories", CategoryController
-    resources "/subcategories", SubcategoryController
-    resources "/transactions", TransactionController
+    live "/transactions", TransactionLive.Index, :index
+    live "/transactions/new", TransactionLive.Index, :new
+    live "/transactions/:id/edit", TransactionLive.Index, :edit
+
+    live "/transactions/:id", TransactionLive.Show, :show
+    live "/transactions/:id/show/edit", TransactionLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.
@@ -40,6 +44,18 @@ defmodule BudgetWeb.Router do
     scope "/" do
       pipe_through :browser
       live_dashboard "/dashboard", metrics: BudgetWeb.Telemetry
+    end
+  end
+
+  # Enables the Swoosh mailbox preview in development.
+  #
+  # Note that preview only shows emails that were sent by the same
+  # node running the Phoenix server.
+  if Mix.env() == :dev do
+    scope "/dev" do
+      pipe_through :browser
+
+      forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end
 end

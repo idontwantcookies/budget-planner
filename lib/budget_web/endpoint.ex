@@ -7,12 +7,8 @@ defmodule BudgetWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_budget_key",
-    signing_salt: "7f79w68h"
+    signing_salt: "2HmoAiBp"
   ]
-
-  socket "/socket", BudgetWeb.UserSocket,
-    websocket: true,
-    longpoll: false
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
@@ -24,7 +20,7 @@ defmodule BudgetWeb.Endpoint do
     at: "/",
     from: :budget,
     gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+    only: ~w(assets fonts images favicon.ico robots.txt)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

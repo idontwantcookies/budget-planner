@@ -3,7 +3,7 @@ defmodule Seeds do
   Used to quickly get the application running with some commonly used categories.
   """
 
-  alias Budget.Finances.{Category, Subcategory}
+  alias Budget.Finances.{Category, Subcategory, Transaction}
   alias Budget.Repo
 
   @expenses %{
@@ -42,10 +42,20 @@ defmodule Seeds do
     :ok
   end
 
+  def seed_transactions! do
+    %Transaction{
+      value: 65,
+      due_by: Date.utc_today(),
+      subcategory: Repo.get_by(Subcategory, name: "restaurants"),
+      description: "Lunch with friends"
+    }
+    |> Repo.insert!(on_conflict: :nothing)
+  end
+
   defp seed_category({name, subcategories}, type) do
     with name <- parse_name(name),
          category <- %Category{name: name, type: type},
-         %Category{id: id} <- Repo.insert!(category) do
+         %Category{id: id} <- Repo.insert!(category, on_conflict: :nothing) do
       {id, subcategories}
     end
   end
@@ -61,7 +71,7 @@ defmodule Seeds do
   defp create_subcategory(category_id, name) do
     with name <- parse_name(name),
          subcategory <- %Subcategory{name: name, category_id: category_id},
-         %Subcategory{} <- Repo.insert!(subcategory) do
+         %Subcategory{} <- Repo.insert!(subcategory, on_conflict: :nothing) do
       :ok
     end
   end
@@ -75,3 +85,4 @@ defmodule Seeds do
 end
 
 Seeds.seed_categories!()
+Seeds.seed_transactions!()

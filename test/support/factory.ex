@@ -26,7 +26,7 @@ defmodule Budget.Factory do
       description: sequence("Transaction#"),
       due_by: Date.utc_today(),
       status: :pending,
-      value: Decimal.new("#{:rand.uniform() * 100}")
+      value: Decimal.new("#{:rand.uniform() * 1000}")
     }
   end
 end

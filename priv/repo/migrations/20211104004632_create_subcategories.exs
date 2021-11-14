@@ -5,7 +5,9 @@ defmodule Budget.Repo.Migrations.CreateSubcategories do
     create table(:subcategories, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :name, :string
-      add :category_id, references(:categories, on_delete: :restrict, type: :binary_id), null: false
+
+      add :category_id, references(:categories, on_delete: :restrict, type: :binary_id),
+        null: false
 
       timestamps()
     end

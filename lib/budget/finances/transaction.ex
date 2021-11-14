@@ -6,14 +6,14 @@ defmodule Budget.Finances.Transaction do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
-  @required_fields [:value, :due_by, :subcategory_id]
-  @fields [:description, :status | @required_fields]
+  @required_fields [:value, :due_by, :subcategory_id, :status]
+  @fields [:description | @required_fields]
 
   @type t :: %__MODULE__{
           id: UUID.t(),
           description: String.t(),
           due_by: Date.t(),
-          status: Ecto.Enum.t(:pending, :scheduled, :completed, :cancelled),
+          status: atom(),
           value: Decimal.t(),
           subcategory_id: UUID.t()
         }
@@ -23,7 +23,7 @@ defmodule Budget.Finances.Transaction do
     field :due_by, :date
 
     field :status, Ecto.Enum,
-      values: [:pending, :scheduled, :completed, :cancelled],
+      values: [:pending, :scheduled, :completed, :late],
       default: :pending
 
     field :value, :decimal
@@ -37,5 +37,6 @@ defmodule Budget.Finances.Transaction do
     transaction
     |> cast(attrs, @fields)
     |> validate_required(@required_fields)
+    |> foreign_key_constraint(:subcategory_id)
   end
 end

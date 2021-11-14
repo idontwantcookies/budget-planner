@@ -1,0 +1,37 @@
+<div>
+  <h2><%= @title %></h2>
+
+  <.form
+    let={f}
+    for={@changeset}
+    id="transaction-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save">
+  
+    <%= label f, :value %>
+    <%= number_input f, :value, step: "any" %>
+    <%= error_tag f, :value %>
+
+    <%= label f, :due_by %>
+    <%= date_select f, :due_by %>
+    <%= error_tag f, :due_by %>
+
+
+    <%= label f, :description %>
+    <%= text_input f, :description %>
+    <%= error_tag f, :description %>
+    
+    <%= label f, :status %>
+    <%= select f, :status, Ecto.Enum.values(Finances.Transaction, :status) %>
+    <%= error_tag f, :status %>
+
+    <%= label f, :subcategory_id %>
+    <%= select f, :subcategory_id, get_subcategories() %>
+    <%= error_tag f, :subcategory_id %>
+  
+    <div>
+      <%= submit "Save", phx_disable_with: "Saving..." %>
+    </div>
+  </.form>
+</div>

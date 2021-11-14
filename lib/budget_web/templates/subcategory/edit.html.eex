@@ -1,5 +1,0 @@
-<h1>Edit Subcategory</h1>
-
-<%= render "form.html", Map.put(assigns, :action, Routes.subcategory_path(@conn, :update, @subcategory)) %>
-
-<span><%= link "Back", to: Routes.subcategory_path(@conn, :index) %></span>
