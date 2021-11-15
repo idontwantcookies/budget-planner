@@ -10,7 +10,9 @@ defmodule Budget.MixProject do
       compilers: [:gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [coveralls: :test]
     ]
   end
 
@@ -51,7 +53,8 @@ defmodule Budget.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:ex_machina, "~> 2.2.2", only: :test},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
+      {:excoveralls, "~> 0.14.4", only: [:dev, :test]}
     ]
   end
 
