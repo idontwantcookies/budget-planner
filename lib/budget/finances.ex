@@ -1,8 +1,4 @@
 defmodule Budget.Finances do
-  @moduledoc """
-  The Finances context.
-  """
-
   import Ecto.Query, warn: false
   alias Budget.Repo
 

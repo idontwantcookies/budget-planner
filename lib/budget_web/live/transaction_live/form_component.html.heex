@@ -14,9 +14,8 @@
     <%= error_tag f, :value %>
 
     <%= label f, :due_by %>
-    <%= date_select f, :due_by %>
+    <%= date_input f, :due_by, default: Date.utc_today() %>
     <%= error_tag f, :due_by %>
-
 
     <%= label f, :description %>
     <%= text_input f, :description %>
