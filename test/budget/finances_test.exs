@@ -2,7 +2,9 @@ defmodule Budget.FinancesTest do
   use Budget.DataCase
   import Budget.Factory
   alias Budget.Finances
-  alias Budget.Finances.{Category, Subcategory, Transaction}
+  alias Finances.Category
+  alias Finances.Subcategory
+  alias Finances.Transaction
   alias Ecto.Changeset
 
   describe "list_categories/0" do
