@@ -3,6 +3,6 @@ defmodule BudgetWeb.PageControllerTest do
 
   test "GET /", %{conn: conn} do
     conn = get(conn, "/")
-    assert html_response(conn, 200) =~ "Welcome to Phoenix!"
+    assert redirected_to(conn, 302) =~ Routes.transaction_index_path(conn, :index)
   end
 end

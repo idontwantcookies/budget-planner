@@ -1,8 +1,6 @@
 defmodule Budget.Reports do
   import Ecto.Query
   import Budget.CustomFunctions
-  alias Budget.Finances.Category
-  alias Budget.Finances.Subcategory
   alias Budget.Finances.Transaction
   alias Budget.Repo
 
@@ -10,12 +8,10 @@ defmodule Budget.Reports do
     start = %Date{year: year, month: month, day: 1}
     stop = %Date{year: year, month: month, day: Date.days_in_month(start)}
 
-    query =
-      from [t, _sc, c] in base_query(start, stop),
-        group_by: c.name,
-        select: {c.name, sum(t.value)}
-
-    query
+    from([t, _sc, c] in base_query(start, stop),
+      select: {c.name, sum(t.value)},
+      group_by: [c.name]
+    )
     |> Repo.all()
     |> Map.new()
   end
@@ -35,9 +31,7 @@ defmodule Budget.Reports do
   defp base_query(start, stop) do
     from t in Transaction,
       where: t.due_by >= ^start and t.due_by <= ^stop,
-      join: sc in Subcategory,
-      on: t.subcategory_id == sc.id,
-      join: c in Category,
-      on: sc.category_id == c.id
+      join: sc in assoc(t, :subcategory),
+      join: c in assoc(sc, :category)
   end
 end
