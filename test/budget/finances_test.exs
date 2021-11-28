@@ -151,6 +151,18 @@ defmodule Budget.FinancesTest do
       transaction = insert(:transaction)
       assert Finances.list_transactions(subcategory: :category) == [transaction]
     end
+
+    test "returns transactions between certain periods" do
+      today = Date.utc_today()
+      a_week_ago = Date.add(today, -7)
+      yesterday = Date.add(today, -1)
+
+      transactions_to_fetch = insert_list(3, :transaction)
+      _transactions_to_ignore = insert_list(2, :transaction, due_by: a_week_ago)
+
+      assert ^transactions_to_fetch =
+               Finances.list_transactions(yesterday, today, subcategory: :category)
+    end
   end
 
   describe "get_transaction!/1" do

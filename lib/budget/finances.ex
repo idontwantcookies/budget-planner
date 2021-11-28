@@ -62,6 +62,16 @@ defmodule Budget.Finances do
 
   def list_transactions(preloads \\ []), do: Transaction |> Repo.all() |> Repo.preload(preloads)
 
+  def list_transactions(start, stop, preloads \\ []) do
+    query =
+      from(t in Transaction,
+        where: t.due_by >= ^start and t.due_by <= ^stop,
+        preload: ^preloads
+      )
+
+    Repo.all(query)
+  end
+
   def get_transaction!(id, preloads \\ []),
     do: Transaction |> Repo.get!(id) |> Repo.preload(preloads)
 
