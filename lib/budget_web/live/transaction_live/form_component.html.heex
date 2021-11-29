@@ -8,26 +8,29 @@
     phx-target={@myself}
     phx-change="validate"
     phx-submit="save">
-  
-    <%= label f, :value %>
-    <%= number_input f, :value, step: "any" %>
-    <%= error_tag f, :value %>
 
     <%= label f, :due_by %>
     <%= date_input f, :due_by, default: Date.utc_today() %>
     <%= error_tag f, :due_by %>
 
+    <%= label f, :value %>
+    <%= number_input f, :value, step: "any" %>
+    <%= error_tag f, :value %>
+
     <%= label f, :description %>
     <%= text_input f, :description %>
     <%= error_tag f, :description %>
+
+    <%= label f, :subcategory_id %>
+    <%= 
+      select f, :subcategory_id, Enum.map(@categories, fn c ->
+        {c.name, Enum.map(c.subcategories, &{&1.name, &1.id})}
+      end) %>
+    <%= error_tag f, :subcategory_id %>
     
     <%= label f, :status %>
     <%= select f, :status, Ecto.Enum.values(Finances.Transaction, :status) %>
     <%= error_tag f, :status %>
-
-    <%= label f, :subcategory_id %>
-    <%= select f, :subcategory_id, @subcategories %>
-    <%= error_tag f, :subcategory_id %>
   
     <div>
       <%= submit "Save", phx_disable_with: "Saving..." %>
