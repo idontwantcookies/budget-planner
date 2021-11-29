@@ -22,7 +22,11 @@ defmodule Budget.Reports do
 
   @spec per_credit_card([Transaction.t()]) :: %{boolean() => Decimal.t()}
   def per_credit_card(transactions) do
-    Enum.group_by(transactions, & &1.credit_card, &sum_transactions/1)
+    transactions
+    |> Enum.group_by(& &1.credit_card)
+    |> Enum.map(fn {cc, transactions} -> {cc, sum_transactions(transactions)} end)
+    |> Map.new()
+    |> Map.merge(%{true: 0, false: 0}, fn _key, value1, _value2 -> value1 end)
   end
 
   defp nested_groupby(list, agg_fun, 0), do: list |> agg_fun.()

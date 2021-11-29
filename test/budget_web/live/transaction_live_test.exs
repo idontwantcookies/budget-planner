@@ -8,13 +8,15 @@ defmodule BudgetWeb.TransactionLiveTest do
     description: "some description",
     due_by: "2021-11-12",
     status: :pending,
-    value: "120.5"
+    value: "120.5",
+    credit_card: false
   }
   @update_attrs %{
     description: "some updated description",
     due_by: "2021-11-20",
     status: :completed,
-    value: "456.7"
+    value: "456.7",
+    credit_card: false
   }
   @invalid_attrs %{
     description: nil,
