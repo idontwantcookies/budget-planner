@@ -70,13 +70,22 @@ defmodule Budget.Finances do
     Subcategory.changeset(subcategory, attrs)
   end
 
-  def list_transactions(preloads \\ []), do: Transaction |> Repo.all() |> Repo.preload(preloads)
+  def list_transactions(preloads \\ []) do
+    query =
+      from(t in Transaction,
+        preload: ^preloads,
+        order_by: [:due_by, :inserted_at]
+      )
+
+    Repo.all(query)
+  end
 
   def list_transactions(start, stop, preloads \\ []) do
     query =
       from(t in Transaction,
         where: t.due_by >= ^start and t.due_by <= ^stop,
-        preload: ^preloads
+        preload: ^preloads,
+        order_by: [:due_by, :inserted_at]
       )
 
     Repo.all(query)
