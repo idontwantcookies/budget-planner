@@ -19,6 +19,7 @@
       <th>Status</th>
       <th>Category</th>
       <th>Subcategory</th>
+      <th>Credit card</th>
 
       <th></th>
     </tr>
@@ -26,12 +27,13 @@
   <tbody id="transactions">
     <%= for transaction <- @transactions do %>
       <tr id={"transaction-#{transaction.id}"}>
-        <td><%= transaction.value %></td>
+        <td><%= Decimal.round(transaction.value, 2) %></td>
         <td><%= transaction.due_by %></td>
         <td><span><%= live_patch transaction.description, to: Routes.transaction_index_path(@socket, :edit, transaction) %></span></td>
         <td><%= transaction.status %></td>
         <td><%= transaction.subcategory.category.name %></td>
         <td><%= transaction.subcategory.name %></td>
+        <td><%= transaction.credit_card %></td>
 
         <td>
           <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: transaction.id, data: [confirm: "Are you sure?"] %></span>

@@ -21,16 +21,20 @@
     <%= text_input f, :description %>
     <%= error_tag f, :description %>
 
-    <%= label f, :subcategory_id %>
+    <%= label f, :subcategory_id, "Category" %>
     <%= 
       select f, :subcategory_id, Enum.map(@categories, fn c ->
         {c.name, Enum.map(c.subcategories, &{&1.name, &1.id})}
-      end) %>
+      end), prompt: "Select category..." %>
     <%= error_tag f, :subcategory_id %>
     
     <%= label f, :status %>
     <%= select f, :status, Ecto.Enum.values(Finances.Transaction, :status) %>
     <%= error_tag f, :status %>
+
+    <%= label f, :credit_card %>
+    <%= checkbox f, :credit_card %>
+    <%= error_tag f, :credit_card %>
   
     <div>
       <%= submit "Save", phx_disable_with: "Saving..." %>
