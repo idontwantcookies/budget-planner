@@ -36,4 +36,21 @@ defmodule Budget.ReportsTest do
                Reports.detailed_report(transactions)
     end
   end
+
+  describe "per_credit_card/1" do
+    test "returns credit card totals" do
+      cc_transactions = insert_list(3, :transaction, value: 10, credit_card: true)
+      debit_transactions = insert_list(5, :transaction, value: 5, credit_card: false)
+
+      assert Reports.per_credit_card(cc_transactions ++ debit_transactions) ==
+               %{
+                 true: Decimal.new("30"),
+                 false: Decimal.new("25")
+               }
+    end
+
+    test "returns empty values when there's not credit card info" do
+      assert Reports.per_credit_card([]) == %{true: 0, false: 0}
+    end
+  end
 end
