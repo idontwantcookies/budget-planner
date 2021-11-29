@@ -8,8 +8,7 @@ defmodule BudgetWeb.TransactionLive.Index do
   def mount(_params, _session, socket) do
     {:ok,
      socket
-     |> assign(:transactions, list_transactions())
-     |> assign(:subcategories, get_subcategories())}
+     |> assign(transactions: get_transactions(), categories: get_categories())}
   end
 
   @impl true
@@ -18,9 +17,14 @@ defmodule BudgetWeb.TransactionLive.Index do
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
+    transaction = Finances.get_transaction!(id, subcategory: :category)
+
     socket
-    |> assign(:page_title, "Edit Transaction")
-    |> assign(:transaction, Finances.get_transaction!(id))
+    |> assign(
+      page_title: "Edit Transaction",
+      transaction: transaction,
+      category: transaction.subcategory.category
+    )
   end
 
   defp apply_action(socket, :new, _params) do
@@ -40,17 +44,15 @@ defmodule BudgetWeb.TransactionLive.Index do
     transaction = Finances.get_transaction!(id)
     {:ok, _} = Finances.delete_transaction(transaction)
 
-    {:noreply, assign(socket, :transactions, list_transactions())}
+    {:noreply, assign(socket, :transactions, get_transactions())}
   end
 
-  defp list_transactions do
+  defp get_transactions do
     Finances.list_transactions(subcategory: :category)
   end
 
-  def get_subcategories do
-    :category
-    |> Finances.list_subcategories()
-    |> Enum.sort_by(fn sc -> {sc.category.name, sc.inserted_at} end)
-    |> Enum.map(fn sc -> {sc.category.name <> "> " <> sc.name, sc.id} end)
+  defp get_categories do
+    :subcategories
+    |> Finances.list_categories()
   end
 end
