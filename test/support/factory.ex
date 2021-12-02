@@ -4,7 +4,7 @@ defmodule Budget.Factory do
   """
 
   use ExMachina.Ecto, repo: Budget.Repo
-  alias Budget.Finances.{Category, Subcategory, Transaction}
+  alias Budget.Finances.{Category, Transaction}
 
   def category_factory do
     %Category{
@@ -13,16 +13,9 @@ defmodule Budget.Factory do
     }
   end
 
-  def subcategory_factory do
-    %Subcategory{
-      category: build(:category),
-      name: sequence("Subcategory#")
-    }
-  end
-
   def transaction_factory do
     %Transaction{
-      subcategory: build(:subcategory),
+      category: build(:category),
       description: sequence("Transaction#"),
       due_by: Date.utc_today(),
       status: :pending,

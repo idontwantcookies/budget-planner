@@ -1,23 +1,22 @@
 defmodule Budget.Reports do
   alias Budget.Finances.Category
-  alias Budget.Finances.Subcategory
   alias Budget.Finances.Transaction
 
   @spec simple_report([Transaction.t()]) :: %{Category.t() => Decimal.t()}
   def simple_report(transactions) do
     transactions
-    |> Enum.group_by(& &1.subcategory.category)
+    |> Enum.group_by(& &1.category)
     |> Enum.map(fn {category, transactions} -> {category, sum_transactions(transactions)} end)
     |> Map.new()
   end
 
   @spec detailed_report([Transaction.t()]) :: %{
-          Category.t() => %{Subcategory.t() => %{integer() => Decimal.t()}}
+          Category.t() => %{integer() => Decimal.t()}
         }
   def detailed_report(transactions) do
     transactions
-    |> Enum.map(&[&1.subcategory.category, &1.subcategory, &1.due_by.month, &1])
-    |> nested_groupby(&sum_transactions/1, 3)
+    |> Enum.map(&[&1.category, &1.due_by.month, &1])
+    |> nested_groupby(&sum_transactions/1, 2)
   end
 
   @spec per_credit_card([Transaction.t()]) :: %{boolean() => Decimal.t()}

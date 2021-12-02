@@ -2,10 +2,7 @@ defmodule Budget.FinancesTest do
   use Budget.DataCase
   import Budget.Factory
   alias Budget.Finances
-  alias Finances.Category
-  alias Finances.Subcategory
-  alias Finances.Transaction
-  alias Ecto.Changeset
+  alias Finances.{Category, Transaction}
 
   describe "list_categories/0" do
     test "returns all categories" do
@@ -73,83 +70,10 @@ defmodule Budget.FinancesTest do
     end
   end
 
-  describe "list_subcategories/0" do
-    test "returns all subcategories" do
-      subcategory = insert(:subcategory)
-      assert Finances.list_subcategories([:category]) == [subcategory]
-    end
-  end
-
-  describe "get_subcategory!/1" do
-    test "returns the subcategory with given id" do
-      subcategory = insert(:subcategory)
-      assert Finances.get_subcategory!(subcategory.id, [:category]) == subcategory
-    end
-  end
-
-  describe "create_subcategory/1" do
-    test "with valid data creates a subcategory" do
-      attrs = params_with_assocs(:subcategory)
-      assert {:ok, %Subcategory{} = subcategory} = Finances.create_subcategory(attrs)
-      assert subcategory.name == attrs[:name]
-    end
-
-    test "with invalid data returns error changeset" do
-      attrs = params_with_assocs(:subcategory, %{name: nil})
-      assert {:error, %Ecto.Changeset{}} = Finances.create_subcategory(attrs)
-    end
-
-    test "does not accept subcategory with same name and same category_id" do
-      category = insert(:category)
-      subcategory = insert(:subcategory, category: category)
-      attrs = %{name: subcategory.name, category_id: category.id}
-      assert {:error, %Changeset{} = changeset} = Finances.create_subcategory(attrs)
-      errors = errors_on(changeset)
-
-      assert "has already been taken" in errors[:name]
-    end
-  end
-
-  describe "update_subcategory/2" do
-    test "with valid data updates the subcategory" do
-      subcategory = insert(:subcategory)
-
-      assert {:ok, %Subcategory{} = subcategory} =
-               Finances.update_subcategory(subcategory, %{name: "some updated name"})
-
-      assert subcategory.name == "some updated name"
-    end
-
-    test "with invalid data returns error changeset" do
-      subcategory = insert(:subcategory)
-
-      assert {:error, %Ecto.Changeset{} = changeset} =
-               Finances.update_subcategory(subcategory, %{name: nil})
-
-      assert errors_on(changeset) == %{name: ["can't be blank"]}
-      assert subcategory == Finances.get_subcategory!(subcategory.id, [:category])
-    end
-  end
-
-  describe "delete_subcategory/1" do
-    test "deletes the subcategory" do
-      subcategory = insert(:subcategory)
-      assert {:ok, %Subcategory{}} = Finances.delete_subcategory(subcategory)
-      assert_raise Ecto.NoResultsError, fn -> Finances.get_subcategory!(subcategory.id) end
-    end
-  end
-
-  describe "change_subcategory/1" do
-    test "returns a subcategory changeset" do
-      subcategory = insert(:subcategory)
-      assert %Ecto.Changeset{valid?: true} = Finances.change_subcategory(subcategory)
-    end
-  end
-
   describe "list_transactions/0" do
     test "returns all transactions" do
       transaction = insert(:transaction)
-      assert Finances.list_transactions(subcategory: :category) == [transaction]
+      assert Finances.list_transactions(:category) == [transaction]
     end
 
     test "returns transactions between certain periods" do
@@ -160,15 +84,14 @@ defmodule Budget.FinancesTest do
       transactions_to_fetch = insert_list(3, :transaction)
       _transactions_to_ignore = insert_list(2, :transaction, due_by: a_week_ago)
 
-      assert ^transactions_to_fetch =
-               Finances.list_transactions(yesterday, today, subcategory: :category)
+      assert ^transactions_to_fetch = Finances.list_transactions(yesterday, today, :category)
     end
   end
 
   describe "get_transaction!/1" do
     test "returns the transaction with given id" do
       transaction = insert(:transaction)
-      assert Finances.get_transaction!(transaction.id, subcategory: :category) == transaction
+      assert Finances.get_transaction!(transaction.id, :category) == transaction
     end
   end
 
@@ -213,7 +136,7 @@ defmodule Budget.FinancesTest do
       assert {:error, %Ecto.Changeset{}} =
                Finances.update_transaction(transaction, %{due_by: nil})
 
-      assert transaction == Finances.get_transaction!(transaction.id, subcategory: :category)
+      assert transaction == Finances.get_transaction!(transaction.id, :category)
     end
   end
 

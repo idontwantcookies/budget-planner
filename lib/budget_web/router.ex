@@ -25,10 +25,6 @@ defmodule BudgetWeb.Router do
     live "/categories", CategoryLive.Index, :index
     live "/categories/new", CategoryLive.Index, :new
     live "/categories/:id/edit", CategoryLive.Index, :edit
-
-    live "/subcategories", SubcategoryLive.Index, :index
-    live "/subcategories/new", SubcategoryLive.Index, :new
-    live "/subcategories/:id/edit", SubcategoryLive.Index, :edit
   end
 
   # Other scopes may use custom stacks.

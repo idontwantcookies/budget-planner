@@ -2,11 +2,11 @@ defmodule Budget.Finances.Transaction do
   use Ecto.Schema
   import Ecto.Changeset
   alias Ecto.UUID
-  alias Budget.Finances.Subcategory
+  alias Budget.Finances.Category
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
-  @required_fields [:value, :subcategory_id, :description, :due_by]
+  @required_fields [:value, :category_id, :description, :due_by]
   @fields [:credit_card, :status | @required_fields]
 
   @type t :: %__MODULE__{
@@ -15,7 +15,7 @@ defmodule Budget.Finances.Transaction do
           due_by: Date.t(),
           status: atom(),
           value: Decimal.t(),
-          subcategory_id: UUID.t(),
+          category_id: UUID.t(),
           credit_card: boolean()
         }
 
@@ -23,14 +23,13 @@ defmodule Budget.Finances.Transaction do
     field :description, :string
     field :due_by, :date, autogenerate: &Date.utc_today/0
     field :credit_card, :boolean, default: false
+    field :value, :decimal
 
     field :status, Ecto.Enum,
       values: [:pending, :scheduled, :completed, :late],
       default: :completed
 
-    field :value, :decimal
-
-    belongs_to :subcategory, Subcategory
+    belongs_to :category, Category
     timestamps()
   end
 
@@ -39,6 +38,6 @@ defmodule Budget.Finances.Transaction do
     transaction
     |> cast(attrs, @fields)
     |> validate_required(@required_fields)
-    |> foreign_key_constraint(:subcategory_id)
+    |> foreign_key_constraint(:category_id)
   end
 end

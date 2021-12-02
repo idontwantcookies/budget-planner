@@ -5,7 +5,7 @@ defmodule Budget.Finances.Category do
 
   use Ecto.Schema
   import Ecto.Changeset
-  alias Budget.Finances.Subcategory
+  alias Budget.Finances.Transaction
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -24,7 +24,7 @@ defmodule Budget.Finances.Category do
     field :name, :string
     field :type, Ecto.Enum, values: [:income, :expense], default: :expense
 
-    has_many :subcategories, Subcategory
+    has_many :transactions, Transaction
     timestamps()
   end
 

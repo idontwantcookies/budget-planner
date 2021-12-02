@@ -4,13 +4,6 @@ defmodule BudgetWeb.TransactionLiveTest do
   import Phoenix.LiveViewTest
   import Budget.Factory
 
-  @create_attrs %{
-    description: "some description",
-    due_by: "2021-11-12",
-    status: :pending,
-    value: "120.5",
-    credit_card: false
-  }
   @update_attrs %{
     description: "some updated description",
     due_by: "2021-11-20",
@@ -37,6 +30,7 @@ defmodule BudgetWeb.TransactionLiveTest do
     end
 
     test "saves new transaction", %{conn: conn} do
+      create_params = params_with_assocs(:transaction)
       {:ok, index_live, _html} = live(conn, Routes.transaction_index_path(conn, :index))
 
       assert index_live |> element("a", "New Transaction") |> render_click() =~
@@ -50,12 +44,12 @@ defmodule BudgetWeb.TransactionLiveTest do
 
       {:ok, _, html} =
         index_live
-        |> form("#transaction-form", transaction: @create_attrs)
+        |> form("#transaction-form", transaction: create_params)
         |> render_submit()
         |> follow_redirect(conn, Routes.transaction_index_path(conn, :index))
 
       assert html =~ "Transaction created successfully"
-      assert html =~ "some description"
+      assert html =~ create_params.description
     end
 
     test "updates transaction in listing", %{conn: conn, transaction: transaction} do

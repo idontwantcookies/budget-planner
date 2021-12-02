@@ -17,13 +17,13 @@ defmodule BudgetWeb.TransactionLive.Index do
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
-    transaction = Finances.get_transaction!(id, subcategory: :category)
+    transaction = Finances.get_transaction!(id, :category)
 
     socket
     |> assign(
       page_title: "Edit Transaction",
       transaction: transaction,
-      category: transaction.subcategory.category
+      category: transaction.category
     )
   end
 
@@ -48,11 +48,10 @@ defmodule BudgetWeb.TransactionLive.Index do
   end
 
   defp get_transactions do
-    Finances.list_transactions(subcategory: :category)
+    Finances.list_transactions(:category)
   end
 
   defp get_categories do
-    :subcategories
-    |> Finances.list_categories()
+    Finances.list_categories()
   end
 end

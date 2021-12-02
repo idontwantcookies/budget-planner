@@ -18,7 +18,6 @@
       <th>Description</th>
       <th>Status</th>
       <th>Category</th>
-      <th>Subcategory</th>
       <th>Credit card</th>
 
       <th></th>
@@ -31,8 +30,7 @@
         <td><%= transaction.due_by %></td>
         <td><span><%= live_patch transaction.description, to: Routes.transaction_index_path(@socket, :edit, transaction) %></span></td>
         <td><%= transaction.status %></td>
-        <td><%= transaction.subcategory.category.name %></td>
-        <td><%= transaction.subcategory.name %></td>
+        <td><%= transaction.category.name %></td>
         <td><%= transaction.credit_card %></td>
 
         <td>
