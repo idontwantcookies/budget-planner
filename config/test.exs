@@ -17,11 +17,8 @@ config :budget, Budget.Repo,
 # you can enable the server option below.
 config :budget, BudgetWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "pzFUuudzVesQMIeEuveqG+XiY8aYQcVADeBKFecqJORaqhsMga8NjffPJIi+8NlH",
+  secret_key_base: "T4a9/UG4XxnczsrR1nGbhdlCu5dQXjwG+uA37uxVoORSxYpwjucip/8vswxkujLc",
   server: false
-
-# In test we don't send emails.
-config :budget, Budget.Mailer, adapter: Swoosh.Adapters.Test
 
 # Print only warnings and errors during test
 config :logger, level: :warn
