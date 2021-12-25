@@ -23,6 +23,7 @@ defmodule Budget.DataCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
+      import Budget.Factory
       import Budget.DataCase
     end
   end

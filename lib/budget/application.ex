@@ -11,9 +11,9 @@ defmodule Budget.Application do
       # Start the Ecto repository
       Budget.Repo,
       # Start the Telemetry supervisor
-      BudgetWeb.Telemetry,
+      # BudgetWeb.Telemetry,
       # Start the PubSub system
-      {Phoenix.PubSub, name: Budget.PubSub},
+      # {Phoenix.PubSub, name: Budget.PubSub},
       # Start the Endpoint (http/https)
       BudgetWeb.Endpoint
       # Start a worker by calling: Budget.Worker.start_link(arg)
